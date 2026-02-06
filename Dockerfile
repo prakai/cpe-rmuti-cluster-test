@@ -1,5 +1,5 @@
 FROM php:8.2-apache
-# Copy your PHP file into the Apache web directory
-COPY index.php /var/www/html/
-# Use the default port 80
+# Create the sub-directory and copy files there
+RUN mkdir -p /var/www/html/prakai-project-0
+COPY index.php /var/www/html/prakai-project-0/
 EXPOSE 80
