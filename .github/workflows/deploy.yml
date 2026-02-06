@@ -43,12 +43,12 @@ jobs:
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
 
       - name: Deploy to K8s
-        uses: azure/k8s-deploy@v4
-        with:
-          namespace: prakai-project-01
-          manifests: |
-            k8s/deployment.yml
-          images: |
-            ${{ env.IMAGE_NAME }}:latest
-          skip-tls-verify: true
-          arguments: "--validate=false"
+        run: |
+          # Use envsubst to replace the placeholder in your YAML with the real image name
+          sed -i "s|ghcr.io/placeholder:latest|${{ env.IMAGE_NAME }}:latest|g" k8s/deployment.yml
+          
+          # Apply the manifest directly
+          kubectl apply -f k8s/deployment.yml \
+            --namespace=prakai-project-01 \
+            --insecure-skip-tls-verify=true \
+            --validate=false
