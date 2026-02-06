@@ -1,31 +1,21 @@
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: php-app
+  name: php-ingress
   namespace: prakai-project-01
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    # This rewrite rule is CRITICAL for sub-paths
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  selector:
-    matchLabels:
-      app: php-app
-  template:
-    metadata:
-      labels:
-        app: php-app
-    spec:
-      containers:
-      - name: php-container
-        image: ghcr.io/${{ github.repository }}:latest
-        ports:
-        - containerPort: 80
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: php-service
-  namespace: prakai-project-01
-spec:
-  selector:
-    app: php-app
-  ports:
-    - port: 80
-      targetPort: 80
+  rules:
+  - host: dev.cpe.rmuti.ac.th
+    http:
+      paths:
+      - path: /prakai-project-0/
+        pathType: Prefix
+        backend:
+          service:
+            name: php-service
+            port:
+              number: 80
