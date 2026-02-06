@@ -1,6 +1,4 @@
 <?php
-echo "<h1>Success!</h1>";
-echo "<h3>Project: $PROJECT is running with Nginx and PHP-FPM.</h3>";
-echo "<b>Server Hostname:</b> " . gethostname() . "<br>";
-echo "<b>URL Path:</b> /$PATH_NAME/<br>";
+echo "<h1>Project xyz is Live</h1>";
+echo "<p>Running on RMUTI Cluster with Nginx + PHP-FPM.</p>";
 ?>
