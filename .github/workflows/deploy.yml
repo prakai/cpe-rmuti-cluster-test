@@ -15,7 +15,6 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # FIX: Correctly formatting the environment variable
       - name: Set Image Name to Lowercase
         run: |
           IMAGE_PATH="ghcr.io/${{ github.repository }}"
@@ -33,7 +32,6 @@ jobs:
         with:
           context: .
           push: true
-          # Now ${{ env.IMAGE_NAME }} will be "ghcr.io/prakai/your-repo"
           tags: ${{ env.IMAGE_NAME }}:latest
 
       - name: Set Kubernetes Context
@@ -44,10 +42,10 @@ jobs:
 
       - name: Deploy to K8s
         run: |
-          # Use envsubst to replace the placeholder in your YAML with the real image name
+          # Physically replace the placeholder with the real image name
           sed -i "s|ghcr.io/placeholder:latest|${{ env.IMAGE_NAME }}:latest|g" k8s/deployment.yml
           
-          # Apply the manifest directly
+          # Deploy using standard kubectl
           kubectl apply -f k8s/deployment.yml \
             --namespace=prakai-project-01 \
             --insecure-skip-tls-verify=true \
