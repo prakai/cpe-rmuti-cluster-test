@@ -15,10 +15,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # This step creates a lowercase version of the repo name for the image tag
+      # FIX: Correctly formatting the environment variable
       - name: Set Image Name to Lowercase
         run: |
-          echo "IMAGE_NAME=ghcr.io/${{ github.repository }}" | tr '[:upper:]' '[:lower:]' >> $GITHUB_ENV
+          IMAGE_PATH="ghcr.io/${{ github.repository }}"
+          echo "IMAGE_NAME=$(echo $IMAGE_PATH | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -32,7 +33,7 @@ jobs:
         with:
           context: .
           push: true
-          # Uses the lowercase environment variable we created
+          # Now ${{ env.IMAGE_NAME }} will be "ghcr.io/prakai/your-repo"
           tags: ${{ env.IMAGE_NAME }}:latest
 
       - name: Set Kubernetes Context
@@ -47,7 +48,6 @@ jobs:
           namespace: prakai-project-01
           manifests: |
             k8s/deployment.yml
-          # This will automatically find the image in your YAML and replace it
           images: |
             ${{ env.IMAGE_NAME }}:latest
           skip-tls-verify: true
