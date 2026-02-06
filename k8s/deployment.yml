@@ -36,9 +36,8 @@ kind: Ingress
 metadata:
   name: php-ingress
   namespace: prakai-project-01
-  # Removed Nginx-specific annotations
 spec:
-  ingressClassName: traefik # <--- Changed to traefik
+  ingressClassName: traefik
   rules:
   - host: project.cpe.rmuti.ac.th
     http:
