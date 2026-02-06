@@ -36,15 +36,14 @@ kind: Ingress
 metadata:
   name: php-ingress
   namespace: prakai-project-01
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  # Removed Nginx-specific annotations
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik # <--- Changed to traefik
   rules:
   - host: project.cpe.rmuti.ac.th
     http:
       paths:
-      - path: /prakai-project-0/
+      - path: /prakai-project-0
         pathType: Prefix
         backend:
           service:
