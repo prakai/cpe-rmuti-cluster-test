@@ -1,13 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-app
+  namespace: prakai-project-01
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: php-app
+  template:
+    metadata:
+      labels:
+        app: php-app
+    spec:
+      containers:
+      - name: php-container
+        image: ghcr.io/placeholder:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: php-service
+  namespace: prakai-project-01
+spec:
+  selector:
+    app: php-app
+  ports:
+    - port: 80
+      targetPort: 80
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: php-ingress
   namespace: prakai-project-01
   annotations:
-    # Keep the rewrite but remove the ingress.class annotation
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-  ingressClassName: nginx # <--- Add this line instead of the annotation
+  ingressClassName: nginx
   rules:
   - host: project.cpe.rmuti.ac.th
     http:
