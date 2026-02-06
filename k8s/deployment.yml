@@ -5,11 +5,11 @@ metadata:
   namespace: prakai-project-01
   annotations:
     kubernetes.io/ingress.class: "nginx"
-    # This rewrite rule is CRITICAL for sub-paths
+    # This ensures the app receives the request correctly even with the sub-path
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: dev.cpe.rmuti.ac.th
+  - host: project.cpe.rmuti.ac.th  # <--- Updated Domain
     http:
       paths:
       - path: /prakai-project-0/
